@@ -11,4 +11,9 @@ import SwiftUI
 public struct PieChartData {
     let value: Double
     let color: Color
+    
+    public init(value: Double, color: Color) {
+        self.value = value
+        self.color = color
+    }
 }
