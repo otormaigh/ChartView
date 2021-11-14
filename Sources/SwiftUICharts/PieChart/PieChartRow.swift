@@ -9,14 +9,15 @@
 import SwiftUI
 
 public struct PieChartRow : View {
-    var data: [Double]
-    var backgroundColor: Color
-    var accentColor: Color
+    var data: [PieChartData]
+    var borderColor: Color
     var slices: [PieSlice] {
         var tempSlices:[PieSlice] = []
         var lastEndDeg:Double = -90
-        let maxValue = data.reduce(0, +)
-        for slice in data {
+        let dataValues = data.map({ PieChartData in PieChartData.value })
+        
+        let maxValue = dataValues.reduce(0, +)
+        for slice in dataValues {
             let normalized:Double = Double(slice)/Double(maxValue)
             let startDeg = lastEndDeg
             let endDeg = lastEndDeg + (normalized * 360)
@@ -42,7 +43,7 @@ public struct PieChartRow : View {
         GeometryReader { geometry in
             ZStack{
                 ForEach(0..<self.slices.count, id: \.self){ i in
-                    PieChartCell(rect: geometry.frame(in: .local), startDeg: self.slices[i].startDeg, endDeg: self.slices[i].endDeg, index: i, backgroundColor: self.backgroundColor,accentColor: self.accentColor)
+                    PieChartCell(rect: geometry.frame(in: .local), startDeg: self.slices[i].startDeg, endDeg: self.slices[i].endDeg, index: i, cellColor: self.data[i].color, borderColor: self.borderColor)
                         .scaleEffect(self.currentTouchedIndex == i ? 1.1 : 1)
                         .animation(Animation.spring())
                 }
@@ -69,13 +70,14 @@ public struct PieChartRow : View {
 struct PieChartRow_Previews : PreviewProvider {
     static var previews: some View {
         Group {
-            PieChartRow(data:[8,23,54,32,12,37,7,23,43], backgroundColor: Color(red: 252.0/255.0, green: 236.0/255.0, blue: 234.0/255.0), accentColor: Color(red: 225.0/255.0, green: 97.0/255.0, blue: 76.0/255.0), showValue: Binding.constant(false), currentValue: Binding.constant(0))
-                .frame(width: 100, height: 100)
+//            PieChartRow(data:[8,23,54,32,12,37,7,23,43], backgroundColor: Color(red: 252.0/255.0, green: 236.0/255.0, blue: 234.0/255.0), accentColor: Color(red: 225.0/255.0, green: 97.0/255.0, blue: 76.0/255.0), showValue: Binding.constant(false), currentValue: Binding.constant(0))
+//                .frame(width: 100, height: 100)
+//            
+//            PieChartRow(data:[0], backgroundColor: Color(red: 252.0/255.0, green: 236.0/255.0, blue: 234.0/255.0), accentColor: Color(red: 225.0/255.0, green: 97.0/255.0, blue: 76.0/255.0), showValue: Binding.constant(false), currentValue: Binding.constant(0))
+//                .frame(width: 100, height: 100)
             
-            PieChartRow(data:[0], backgroundColor: Color(red: 252.0/255.0, green: 236.0/255.0, blue: 234.0/255.0), accentColor: Color(red: 225.0/255.0, green: 97.0/255.0, blue: 76.0/255.0), showValue: Binding.constant(false), currentValue: Binding.constant(0))
-                .frame(width: 100, height: 100)
-            
-            PieChartRow(data:[75, 25], backgroundColor: Color(red: 252.0/255.0, green: 236.0/255.0, blue: 234.0/255.0), accentColor: Color(red: 225.0/255.0, green: 97.0/255.0, blue: 76.0/255.0), showValue: Binding.constant(false), currentValue: Binding.constant(0))
+            let data = [PieChartData(value: 25, color: Color.orange), PieChartData(value: 30, color: Color.blue), PieChartData(value: 45, color: Color.green)]
+            PieChartRow(data: data, borderColor: Color.red, showValue: Binding.constant(false), currentValue: Binding.constant(0))
                 .frame(width: 100, height: 100)
         }
     }

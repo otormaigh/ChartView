@@ -9,7 +9,7 @@
 import SwiftUI
 
 public struct PieChartView : View {
-    public var data: [Double]
+    public var data: [PieChartData]
     public var title: String
     public var legend: String?
     public var style: ChartStyle
@@ -26,7 +26,7 @@ public struct PieChartView : View {
         }
     }
     
-    public init(data: [Double], title: String, legend: String? = nil, style: ChartStyle = Styles.pieChartStyleOne, form: CGSize? = ChartForm.medium, dropShadow: Bool? = true, valueSpecifier: String? = "%.1f"){
+    public init(data: [PieChartData], title: String, legend: String? = nil, style: ChartStyle = Styles.pieChartStyleOne, form: CGSize? = ChartForm.medium, dropShadow: Bool? = true, valueSpecifier: String? = "%.1f"){
         self.data = data
         self.title = title
         self.legend = legend
@@ -58,8 +58,10 @@ public struct PieChartView : View {
                     }
                     Spacer()
                 }.padding()
-                PieChartRow(data: data, backgroundColor: self.style.backgroundColor, accentColor: self.style.accentColor, showValue: $showValue, currentValue: $currentValue)
-                    .foregroundColor(self.style.accentColor).padding(self.legend != nil ? 0 : 12).offset(y:self.legend != nil ? 0 : -10)
+                PieChartRow(data: data, borderColor: self.style.accentColor, showValue: $showValue, currentValue: $currentValue)
+                    .foregroundColor(self.style.accentColor)
+                    .padding(self.legend != nil ? 0 : 12)
+                    .offset(y:self.legend != nil ? 0 : -10)
                 if(self.legend != nil) {
                     Text(self.legend!)
                         .font(.headline)
@@ -75,7 +77,8 @@ public struct PieChartView : View {
 #if DEBUG
 struct PieChartView_Previews : PreviewProvider {
     static var previews: some View {
-        PieChartView(data:[56,78,53,65,54], title: "Title", legend: "Legend")
+        let data = [PieChartData(value: 25, color: Color.orange), PieChartData(value: 30, color: Color.blue), PieChartData(value: 45, color: Color.green)]
+        PieChartView(data: data, title: "Title", legend: "Legend")
     }
 }
 #endif
