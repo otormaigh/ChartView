@@ -57,9 +57,6 @@ public struct PieChartView : View {
                             .foregroundColor(self.style.textColor)
                     }
                     Spacer()
-                    Image(systemName: "chart.pie.fill")
-                        .imageScale(.large)
-                        .foregroundColor(self.style.legendTextColor)
                 }.padding()
                 PieChartRow(data: data, backgroundColor: self.style.backgroundColor, accentColor: self.style.accentColor, showValue: $showValue, currentValue: $currentValue)
                     .foregroundColor(self.style.accentColor).padding(self.legend != nil ? 0 : 12).offset(y:self.legend != nil ? 0 : -10)
